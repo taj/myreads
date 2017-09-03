@@ -12,6 +12,7 @@ class BooksApp extends React.Component {
 		 * pages, as well as provide a good URL they can bookmark and share.
 		 */
 		showSearchPage: true,
+		books: [],
 		currentlyReadingBooks: [],
 		wantToReadBooks: [],
 		readBooks: []
@@ -19,22 +20,30 @@ class BooksApp extends React.Component {
 
 	componentDidMount() {
 		BooksAPI.getAll().then((books) => {
-			this.setState({ currentlyReadingBooks: books.filter((book) => book.shelf == "currentlyReading" ) })
-			this.setState({ wantToReadBooks: books.filter((book) => book.shelf == "wantToRead" ) })
-			this.setState({ readBooks: books.filter((book) => book.shelf == "read" ) })
+			this.setState({ books: books });
 		})
+	}
+
+	onUpdateBookShelf = (book, newShelf) => {
+		BooksAPI.update(book, newShelf).then(() => {
+			BooksAPI.getAll().then(books => {
+				this.setState({
+					books: books
+				})
+			})
+		});
 	}
 
 	render() {
 		return (
 			<div className="app">
-				<div className="list-books-title">
-					<h1>MyReads</h1>
-				</div>
-				<div className="list-books-content">
-					<BooksList books={this.state.currentlyReadingBooks} listTitle="Currently Reading" />
-					<BooksList books={this.state.wantToReadBooks} listTitle="Want to Read" />
-					<BooksList books={this.state.readBooks} listTitle="Read" />
+				<div className="list-books">
+					<div className="list-books-title">
+						<h1>MyReads</h1>
+					</div>
+					<div className="list-books-content">
+						<BooksList books={this.state.books} onUpdateBookShelf={this.onUpdateBookShelf} />
+					</div>
 				</div>
 			</div>
 		)

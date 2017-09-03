@@ -1,46 +1,23 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import BookShelf from './BookShelf';
+import PropTypes from 'prop-types';
 
 class BooksList extends Component {
 	static propTypes = {
 		books: PropTypes.array.isRequired,
-		listTitle: PropTypes.array.isRequired,
 	}
 
 	render() {
-		let { books, listTitle } = this.props
+		let { books, onUpdateBookShelf } = this.props
+		let currentlyReadingBooks = books.filter((book) => book.shelf === "currentlyReading" );
+		let wantToReadBooks = books.filter((book) => book.shelf === "wantToRead" );
+		let readBooks = books.filter((book) => book.shelf === "read" );
 
 		return (
-			<div className="bookshelf">
-				<h2 className="bookshelf-title">{listTitle}</h2>
-				<div className="bookshelf-books">
-					<ol className="books-grid">
-						{books.map((book) => (
-							<li>
-								<div className="book" key={book.id}>
-									<div className="book-top">
-										<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
-										<div className="book-shelf-changer">
-											<select>
-												<option value="none" disabled>Move to...</option>
-												<option value="currentlyReading">Currently Reading</option>
-												<option value="wantToRead">Want to Read</option>
-												<option value="read">Read</option>
-												<option value="none">None</option>
-											</select>
-										</div>
-									</div>
-									<div className="book-title">{book.title}</div>
-									<div className="book-authors">
-										{book.authors.map((author) => (
-											<span key={author}>{author}</span>
-										))}
-									</div>
-								</div>
-							</li>
-						))}
-					</ol>
-				</div>
+			<div>
+				<BookShelf books={currentlyReadingBooks} shelfTitle={"Currently Reading"} onUpdateBookShelf={onUpdateBookShelf} />
+				<BookShelf books={wantToReadBooks} shelfTitle={"Want to Read"} onUpdateBookShelf={onUpdateBookShelf} />
+				<BookShelf books={readBooks} shelfTitle={"Read"} onUpdateBookShelf={onUpdateBookShelf} />
 			</div>
 		);
 	}
