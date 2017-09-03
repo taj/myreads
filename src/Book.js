@@ -14,18 +14,28 @@ class Book extends Component {
 	}
 
 	handleChange(e) {
-		var value = e.target.value;
+		var value = e.target.value.trim();
 		this.props.onUpdateBookShelf(this.props.book, value);
 	}
 
 	render() {
 		let { book } = this.props;
+		let authors = [];
+		let shelf = 'none';
+		if (book.authors) {
+			authors = book.authors;
+		}
+		// debugger;
+		if (book.shelf)
+			shelf = book.shelf
+
+
 		return (
 			<div className="book">
 				<div className="book-top">
 					<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
 					<div className="book-shelf-changer">
-						<select value={book.shelf} onChange={this.handleChange}>
+						<select value={shelf} onChange={this.handleChange}>
 							<option value="none" disabled>Move to...</option>
 							<option value="currentlyReading">Currently Reading</option>
 							<option value="wantToRead">Want to Read</option>
@@ -36,7 +46,7 @@ class Book extends Component {
 				</div>
 				<div className="book-title">{book.title}</div>
 				<div className="book-authors">
-					{book.authors.map((author) => (
+					{authors.map((author) => (
 						<span key={author}>{author}</span>
 					))}
 				</div>
