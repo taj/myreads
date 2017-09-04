@@ -12,7 +12,7 @@ class Search extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { books: [] };
+		this.state = { books: [], errorMessage: '' };
 		
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -24,13 +24,13 @@ class Search extends Component {
 	
 	searchBooks = (keyword) => {
 		if (keyword === '') {
-			this.setState({ books: [] });
+			this.setState({ books: [], errorMessage: '' });
 			return
 		}
 		BooksAPI.search(keyword, 20).then((result) => {
 			console.log(result)
 			if (result.error) {
-				this.setState({ books: [] });
+				this.setState({ books: [], errorMessage: 'No books found for this search.' });
 				return
 			}
 
@@ -47,9 +47,7 @@ class Search extends Component {
 				return foundBook;
 			});
 
-			this.setState({
-				books: foundBooks
-			});
+			this.setState({ books: foundBooks, errorMessage: '' });
 		});
 	}
 
@@ -64,9 +62,13 @@ class Search extends Component {
 					</div>
 				</div>
 				<div className="search-books-results">
-					<ol className="books-grid">
-						<BookShelf books={this.state.books} shelfTitle={""} onUpdateBookShelf={onUpdateBookShelf} />
-					</ol>
+					{this.state.errorMessage === "" ? (
+						<ol className="books-grid">
+							<BookShelf books={this.state.books} shelfTitle={""} onUpdateBookShelf={onUpdateBookShelf} />
+						</ol>
+					) : (
+						<h2 style={{textAlign: 'center'}}>{this.state.errorMessage}</h2>
+					)}
 				</div>
 			</div>
 		)
