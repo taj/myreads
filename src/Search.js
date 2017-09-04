@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BookShelf from './BookShelf';
+import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
 
 class Search extends Component {
+	static propTypes = {
+		booksFromShelf: PropTypes.array.isRequired,
+	}
+
 	constructor(props) {
 		super(props);
 
-		this.state = {books: []};
+		this.state = { books: [] };
 		
 		this.handleChange = this.handleChange.bind(this);
 	}
-
 
 	handleChange = (e) => {
 		var value = e.target.value.trim();
@@ -29,8 +33,22 @@ class Search extends Component {
 				this.setState({ books: [] });
 				return
 			}
+
+			let { booksFromShelf } = this.props;
+
+			const foundBooks = result.map((book) => {
+				let foundBook = booksFromShelf.find((bookFromShelf) => bookFromShelf.id === book.id);
+
+				if (!foundBook) {
+					foundBook = book;
+					foundBook.shelf = 'none'
+				}
+
+				return foundBook;
+			});
+
 			this.setState({
-				books: result
+				books: foundBooks
 			});
 		});
 	}

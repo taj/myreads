@@ -25,7 +25,6 @@ class BooksList extends Component {
 					<BookShelf books={readBooks} shelfTitle={"Read"} onUpdateBookShelf={onUpdateBookShelf} />
 				</div>
 				<div className="open-search">
-					{/* <a href="/search">Add Contact</a> */}
 					<Link to='/search'>Add Contact</Link>
 				</div>
 			</div>
