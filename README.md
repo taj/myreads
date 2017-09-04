@@ -2,6 +2,16 @@ This is the starter template for the final assessment project for Udacity's Reac
 
 Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
 
+## To install and start the app
+Install all packages required by the app
+```
+npm install
+```
+To launch the project
+```
+npm start
+```
+
 ## What You're Getting
 ```
 +--public/
