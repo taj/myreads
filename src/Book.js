@@ -21,7 +21,6 @@ class Book extends Component {
 	render() {
 		let { book } = this.props;
 		let authors = [];
-		let shelf = 'none';
 		if (book.authors) {
 			authors = book.authors;
 		}

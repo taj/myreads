@@ -10,9 +10,19 @@ class BooksList extends Component {
 
 	render() {
 		let { books, onUpdateBookShelf } = this.props
-		let currentlyReadingBooks = books.filter((book) => book.shelf === "currentlyReading");
-		let wantToReadBooks = books.filter((book) => book.shelf === "wantToRead");
-		let readBooks = books.filter((book) => book.shelf === "read");
+		let booksToDisplay = [];
+		booksToDisplay[0] = {
+			"shelfTitle" : "Currently Reading",
+			"books": books.filter((book) => book.shelf === "currentlyReading"),
+		}
+		booksToDisplay[1] = {
+			"shelfTitle" : "Want to Read",
+			"books": books.filter((book) => book.shelf === "wantToRead"),
+		}
+		booksToDisplay[2] = {
+			"shelfTitle" : "Read",
+			"books": books.filter((book) => book.shelf === "read"),
+		}
 
 		return (
 			<div className="list-books">
@@ -20,9 +30,9 @@ class BooksList extends Component {
 					<h1>MyReads</h1>
 				</div>
 				<div className="list-books-content">
-					<BookShelf books={currentlyReadingBooks} shelfTitle={"Currently Reading"} onUpdateBookShelf={onUpdateBookShelf} />
-					<BookShelf books={wantToReadBooks} shelfTitle={"Want to Read"} onUpdateBookShelf={onUpdateBookShelf} />
-					<BookShelf books={readBooks} shelfTitle={"Read"} onUpdateBookShelf={onUpdateBookShelf} />
+					{booksToDisplay.map((books) => (
+						<BookShelf key={books['shelfTitle']} books={books["books"]} shelfTitle={books['shelfTitle']} onUpdateBookShelf={onUpdateBookShelf} />
+					))}
 				</div>
 				<div className="open-search">
 					<Link to='/search'>Add Contact</Link>
